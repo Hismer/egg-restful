@@ -8,7 +8,7 @@ module.exports = () => async (ctx, next) => {
     await next(ctx);
   } catch (e) {
     const { msg, status } = e;
-    if (ctx.restful.isHttpError(e)) throw e;
+    if (!ctx.restful.isHttpError(e)) throw e;
     ctx.status = status;
     ctx.body = { msg };
   }
