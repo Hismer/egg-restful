@@ -1,6 +1,6 @@
 {
   "name": "egg-restful",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "RESTful工具包",
   "eggPlugin": {
     "name": "restful"

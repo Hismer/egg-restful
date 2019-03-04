@@ -273,7 +273,10 @@ module.exports = class Tools {
 
     // 附加统计结果
     const total = with_total ? await model.count(options) : undefined;
-    this.response({ data, limit, page, offset: options.offset, total }, 200);
+    this.response(
+      { data, meta: { limit, page, offset: options.offset, total } },
+      200
+    );
   }
 
   /**
