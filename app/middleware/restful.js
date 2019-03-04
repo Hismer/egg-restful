@@ -1,5 +1,5 @@
 'use strict';
-const Tools = require('../../lib/tools');
+const Tools = require('../../libs/tools');
 
 // Http错误中间件
 module.exports = () => async (ctx, next) => {

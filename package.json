@@ -1,6 +1,6 @@
 {
   "name": "egg-restful",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "RESTful工具包",
   "eggPlugin": {
     "name": "restful"
@@ -29,6 +29,7 @@
   "engines": {
     "node": ">=8.0.0"
   },
+  "typings": "typings/index.d.ts",
   "scripts": {
     "dev": "egg-bin dev",
     "test": "npm run lint -- --fix && egg-bin pkgfiles && npm run test-local",
@@ -40,8 +41,9 @@
     "autod": "autod"
   },
   "files": [
+    "typings",
     "app",
-    "lib",
+    "libs",
     "config",
     "app.js"
   ],
