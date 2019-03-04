@@ -53,9 +53,9 @@
     "url": "git+https://github.com/Hismer/egg-restful.git"
   },
   "bugs": {
-    "url": "https://github.com/eggjs/egg/issues"
+    "url": "https://github.com/Hismer/egg-restful/issues"
   },
-  "homepage": "https://github.com/eggjs/egg-restful#readme",
+  "homepage": "https://github.com/Hismer/egg-restful#readme",
   "author": "胡永强",
   "license": "MIT"
 }
