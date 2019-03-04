@@ -2,10 +2,10 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportError = require('../../../app/middleware/error');
+import ExportRestful = require('../../../app/middleware/restful');
 
 declare module 'egg' {
   interface IMiddleware {
-    error: typeof ExportError;
+    restful: typeof ExportRestful;
   }
 }
