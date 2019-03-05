@@ -123,7 +123,7 @@ module.exports = class Tools {
     const { require, error, validator, type } = Object.assign(
       {
         require: false,
-        error: this.createHttpError('参数格式错误', 401),
+        error: this.createHttpError('参数格式错误', 400),
       },
       options
     );
@@ -181,7 +181,7 @@ module.exports = class Tools {
     if (!status) return this.error('资源已存在', 409);
     // 响应实体数据
     const data = await this.render(entity, render);
-    this.response(data, 200);
+    this.response(data, 201);
   }
 
   /**
@@ -208,7 +208,7 @@ module.exports = class Tools {
     // 保存并响应结果
     await entity.save();
     const data = await this.render(entity, render);
-    this.response(data, 200);
+    this.response(data, 204);
   }
 
   /**
@@ -235,7 +235,13 @@ module.exports = class Tools {
    */
   async index(model, options = {}, render) {
     // 解析参数
-    const { limit, page, offset, with_total } = this.getQuerys({
+    const { limit, page, offset, with_data, with_total } = this.getQuerys({
+      with_data: {
+        require: false,
+        default: true,
+        validator: isBoolean,
+        type: toBoolean,
+      },
       with_total: {
         require: false,
         default: true,
@@ -266,9 +272,11 @@ module.exports = class Tools {
 
     // 获取列表数据
     const data = [];
-    const list = await model.findAll(options);
-    for (const entity of list) {
-      data.push(await this.render(entity, render));
+    if (with_data) {
+      const list = await model.findAll(options);
+      for (const entity of list) {
+        data.push(await this.render(entity, render));
+      }
     }
 
     // 附加统计结果
