@@ -191,7 +191,7 @@ module.exports = class Tools {
    * @param {*} render 渲染方法
    * @return {undefined}
    */
-  async update(model, options, render) {
+  async update(model, options) {
     // 解析选项
     const { where, values } = options;
 
@@ -207,8 +207,22 @@ module.exports = class Tools {
 
     // 保存并响应结果
     await entity.save();
-    const data = await this.render(entity, render);
-    this.response(data, 204);
+    this.response(undefined, 204);
+  }
+
+  /**
+   * 删除RESTful资源API
+   * @param {*} model 模型
+   * @param {*} where 选项参数
+   * @return {undefined}
+   */
+  async destroy(model, where) {
+    // 查找对象
+    const entity = await model.findOne({ where });
+    if (!entity) return this.error('资源不存在', 404);
+    // 响应结果
+    await entity.destroy();
+    this.response(undefined, 204);
   }
 
   /**
