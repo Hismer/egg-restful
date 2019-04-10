@@ -173,9 +173,10 @@ module.exports = class Tools {
    * @param {*} model 模型
    * @param {*} options 选项参数
    * @param {*} render 渲染方法
+   * @param {*} append 渲染方法
    * @return {undefined}
    */
-  async create(model, options, render) {
+  async create(model, options, render = false) {
     // 查找创建对象
     const [ entity, status ] = await model.findOrCreate(options);
     if (!status) return this.error('资源已存在', 409);
@@ -230,14 +231,16 @@ module.exports = class Tools {
    * @param {*} model 模型
    * @param {*} where 选项参数
    * @param {*} render 渲染方法
+   * @param {*} append 渲染方法
    * @return {undefined}
    */
-  async show(model, where, render) {
+  async show(model, where, render, append) {
     // 查找对象
     const entity = await model.findOne({ where });
     if (!entity) return this.error('资源不存在', 404);
     // 响应结果
-    const data = await this.render(entity, render);
+    let data = await this.render(entity, render);
+    if (append) data = append(data);
     this.response(data, 200);
   }
 
@@ -246,8 +249,9 @@ module.exports = class Tools {
    * @param {*} model 模型
    * @param {*} options 选项参数
    * @param {*} render 渲染方法
+   * @param {*} append 渲染方法
    */
-  async index(model, options = {}, render) {
+  async index(model, options = {}, render, append = false) {
     // 解析参数
     const { limit, page, offset, with_data, with_total } = this.getQuerys({
       with_data: {
@@ -295,10 +299,9 @@ module.exports = class Tools {
 
     // 附加统计结果
     const total = with_total ? await model.count(options) : undefined;
-    this.response(
-      { data, meta: { limit, page, offset: options.offset, total } },
-      200
-    );
+    let result = { data, meta: { limit, page, offset: options.offset, total } };
+    if (append) result = append(result);
+    this.response(result, 200);
   }
 
   /**
