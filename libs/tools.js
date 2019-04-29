@@ -268,7 +268,6 @@ module.exports = class Tools {
       },
       limit: {
         require: false,
-        default: 20,
         validator: [ isInt, { min: 1 }],
         type: parseInt,
       },
@@ -285,8 +284,10 @@ module.exports = class Tools {
     });
 
     // 附加分页参数
-    options.limit = limit;
-    options.offset = page ? (page - 1) * limit : offset;
+    if (page || offset) {
+      options.limit = limit ? limit : 20;
+      options.offset = page ? (page - 1) * limit : offset;
+    } else if (limit) options.limit = limit;
 
     // 获取列表数据
     const data = [];
