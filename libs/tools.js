@@ -286,7 +286,7 @@ module.exports = class Tools {
     // 附加分页参数
     if (page || offset) {
       options.limit = limit ? limit : 20;
-      options.offset = page ? (page - 1) * limit : offset;
+      options.offset = page ? (page - 1) * options.limit : offset;
     } else if (limit) options.limit = limit;
 
     // 获取列表数据
@@ -300,7 +300,15 @@ module.exports = class Tools {
 
     // 附加统计结果
     const total = with_total ? await model.count(options) : undefined;
-    let result = { data, meta: { limit, page, offset: options.offset, total } };
+    let result = {
+      data,
+      meta: {
+        limit: options.limit,
+        page,
+        offset: options.offset,
+        total,
+      },
+    };
     if (append) result = append(result);
     this.response(result, 200);
   }
